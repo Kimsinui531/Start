@@ -2,13 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Calculator extends JFrame {
+    private JTextField inputSpace; // 입력 필드
+    private JTextArea area; // 히스토리 표시 영역
+
+
     Calculator(){
             setTitle("계산기");
-            this.setSize(368,489);
+            setSize(368,489);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
 
             PanelNorth();
-            PanelCenter();
             PanelSouth();// 메서드 호출
 
             setVisible(true);
@@ -21,15 +24,9 @@ public class Calculator extends JFrame {
         area.setEditable(false);
         area.setForeground(Color.BLACK);
         panel.add(area);
-
-        add(panel, BorderLayout.NORTH);
     }
 
-    void PanelCenter(){
-
-    }
-
-    void PanelSouth(){
+    void PanelSouth(){ //
 
     }
 
