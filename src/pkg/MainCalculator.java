@@ -15,7 +15,6 @@ import java.awt.*;
  */
 
 public class MainCalculator extends JFrame {
-    private JTextField inputSpace; // 입력 필드
 
     MainCalculator() {
         setTitle("계산기"); // 타이틀을 계산기로 지정
@@ -26,7 +25,7 @@ public class MainCalculator extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         // NORTH 패널 설정
-        gbc.gridx = 0;
+
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 4.0; // 비율 4
@@ -47,13 +46,16 @@ public class MainCalculator extends JFrame {
     }
 
     private JPanel panelExpression() {
-        JPanel expressionPanel = new JPanel();
-        inputSpace = new JTextField();
+        JPanel expressionPanel = new JPanel(new BorderLayout());
+
+        JTextField inputSpace = new JTextField();
+        inputSpace.setFont(new Font("나눔고딕", Font.BOLD, 24));
         inputSpace.setBackground(new Color(10,10,40));
         inputSpace.setForeground(Color.WHITE);
         expressionPanel.add(inputSpace);
         return expressionPanel;
     }
+
 
     private JPanel panelWindow() { // 계산 결과값을 출력해주는 패널
         JPanel windowPanel = new JPanel();
