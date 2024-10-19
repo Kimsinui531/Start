@@ -57,13 +57,14 @@ public class MainCalculator extends JFrame {
 
     private JPanel panelWindow() { // 계산 결과값을 출력해주는 패널
         JPanel windowPanel = new JPanel();
+
         windowPanel.setLayout(new BorderLayout());
-        inputSpace = new JTextField();
-        inputSpace.setEditable(false); // 편집 불가능하게 설정
-        inputSpace.setBackground(new Color(40, 40, 40)); // 배경색 그레이로 설정
-        inputSpace.setHorizontalAlignment(JTextField.LEFT);
-        inputSpace.setForeground(Color.white);
-        windowPanel.add(inputSpace);
+        JTextField ResultSpace = new JTextField();
+        ResultSpace.setEditable(false); // 편집 불가능하게 설정
+        ResultSpace.setBackground(new Color(40, 40, 40)); // 배경색 그레이로 설정
+        ResultSpace.setHorizontalAlignment(JTextField.LEFT);
+        ResultSpace.setForeground(Color.white);
+        windowPanel.add(ResultSpace);
         return windowPanel;
     }
 
