@@ -2,6 +2,9 @@ package pkg;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 /**
  * 자바독
@@ -15,6 +18,10 @@ import java.awt.*;
  */
 
 public class MainCalculator extends JFrame {
+
+    private JTextField inputSpace;
+    private String operator = "";
+    private BigDecimal firstNumber = null;
 
     MainCalculator() {
         setTitle("계산기"); // 타이틀을 계산기로 지정
@@ -48,7 +55,7 @@ public class MainCalculator extends JFrame {
     private JPanel panelExpression() {
         JPanel expressionPanel = new JPanel(new BorderLayout());
 
-        JTextField inputSpace = new JTextField();
+        inputSpace = new JTextField();
         inputSpace.setFont(new Font("나눔고딕", Font.BOLD, 24));
         inputSpace.setBackground(new Color(10,10,40));
         inputSpace.setForeground(Color.WHITE);
@@ -82,6 +89,9 @@ public class MainCalculator extends JFrame {
             buttons[i] = new JButton(button_names[i]);
             buttons[i].setFont(new Font("나눔고딕", Font.BOLD, 20));
             buttons[i].setBackground(Color.LIGHT_GRAY);
+            buttons[i].addActionListener(new ButtonClickListener());
+            buttons[i].setForeground(Color.WHITE);
+
             if (button_names[i].equals("C")) {
                 buttons[i].setBackground(new Color(255, 192, 203));
             }
@@ -91,12 +101,62 @@ public class MainCalculator extends JFrame {
             if (button_names[i].equals("=")) {
                 buttons[i].setBackground(new Color(240, 110, 140));
             }
-            buttons[i].setForeground(Color.WHITE);
             buttonPanel.add(buttons[i]);
+
+
         }
+
 
         return buttonPanel;
     }
+
+    private class ButtonClickListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+
+            if ("0123456789".contains(command)) {
+                inputSpace.setText(inputSpace.getText() + command); // 숫자 추가
+            } else if (command.equals("C")) {
+                inputSpace.setText(""); // 초기화
+                operator = "";
+                firstNumber = null;
+            } else if (command.equals("=")) {
+                if (firstNumber != null && !operator.isEmpty()) {
+                    BigDecimal secondNumber = new BigDecimal(inputSpace.getText());
+                    BigDecimal result = calculate(firstNumber, secondNumber, operator);
+                    inputSpace.setText(result.toString());
+                    firstNumber = null; // 계산 후 초기화
+                    operator = "";
+                }
+            } else {
+                if (firstNumber == null) {
+                    firstNumber = new BigDecimal(inputSpace.getText());
+                } else {
+                    BigDecimal secondNumber = new BigDecimal(inputSpace.getText());
+                    BigDecimal result = calculate(firstNumber, secondNumber, operator);
+                    inputSpace.setText(result.toString());
+                }
+                operator = command; // 연산자 설정
+                inputSpace.setText(""); // 입력 필드 초기화
+            }
+        }
+    }
+    private BigDecimal calculate(BigDecimal first, BigDecimal second, String operator) {
+        switch (operator) {
+            case "+":
+                return first.add(second);
+            case "-":
+                return first.subtract(second);
+            case "×":
+                return first.multiply(second);
+            case "÷":
+                return first.divide(second);
+            default:
+                return BigDecimal.ZERO; // 기본값
+        }
+    }
+
 
     public static void main(String[] args) {
         new MainCalculator();
