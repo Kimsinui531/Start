@@ -7,15 +7,31 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
 /**
- * 자바독
- * 데이터베이스 연결을 관리하는 싱글톤 클래스입니다.
+ * MainCalculator 클래스
+ * <p>
+ * 이 클래스는 간단한 GUI 계산기를 구현
+ * 사용자가 입력한 숫자와 연산자를 통해 결과를 계산, 계산 과정을 표시하는 기능을 제공
+ * 계산기 UI는 Swing 라이브러리를 사용하여 구현
+ * </p>
+ *
+ * <p>
+ * <strong>예외 처리:</strong> 나누기 연산에서 0으로 나누는 경우를 처리하지 않음
+ * </p>
  *
  * @created 2024-10-14
- * @lastModified 2024...??
+ * @lastModified 2024-10-20
  * @changelog <ul>
  * <li>2024-10-14: 최초 생성 (Kim Sin Ui)</li>
+ * <li>2024-10-14:계산기 외형을 위한 기본 골격 생성</li>
+ * <li>2024-10-18:JPanel 추가 및 레이아웃 설정</li>
+ * <li>2024-10-18:버튼 이름 추가 및 JButton 인스턴스 초기화</li>
+ * <li>2024-10-19:계산기 UI 개선: 배경 색상 수정 및 레이아웃 변경</li>
+ * <li>2024-10-19:버튼 클릭 리스너 및 계산 메서드 구현</li>
+ * <li>2024-10-20:추가된 기능 및 코드 수정</li>
+ * <li>2024-10-20: 자바독 추가</li>
  * </ul>
  */
+
 
 public class MainCalculator extends JFrame {
 
@@ -23,6 +39,14 @@ public class MainCalculator extends JFrame {
     private JTextField inputSpace; // 사용자 입력
     private String operator = "";
     private BigDecimal firstNumber = null;
+
+    /**
+     * MainCalculator 생성자
+     * <p>
+     * 계산기 UI를 초기화하고 패널을 설정
+     * GridBagLayout을 사용하여 동적인 레이아웃을 구성하여 계산기 버튼과 표시 영역을 포함
+     * </p>
+     */
 
     MainCalculator() {
         setTitle("계산기"); // 타이틀을 계산기로 지정
@@ -46,6 +70,16 @@ public class MainCalculator extends JFrame {
 
         setVisible(true);
     }
+    /**
+     * 계산 과정과 사용자 입력을 위한 패널 생성
+     * <p>
+     * JTextArea와 JTextField를 포함하여 계산 과정을 표시
+     * 사용자 입력을 처리
+     * JScrollPane을 사용하여 텍스트 영역의 스크롤을 가능하게 함
+     * </p>
+     *
+     * @return 설정된 JPanel
+     */
 
     private JPanel panelExpression() {
         JPanel expressionPanel = new JPanel(new BorderLayout());
@@ -69,6 +103,17 @@ public class MainCalculator extends JFrame {
 
         return expressionPanel;
     }
+
+    /**
+     * 계산기 버튼을 위한 패널 생성
+     * <p>
+     * 숫자 및 연산자 버튼을 포함하는 패널을 생성
+     * 각 버튼은 ActionListener를 통해 클릭 이벤트를 처리
+     * </p>
+     *
+     * @return 설정된 JPanel
+     */
+
 
     private JPanel panelButton() {
         JPanel buttonPanel = new JPanel();
@@ -101,6 +146,14 @@ public class MainCalculator extends JFrame {
 
         return buttonPanel;
     }
+
+    /**
+     * 버튼 클릭 이벤트 리스너
+     * <p>
+     * 사용자가 버튼을 클릭했을 때 발생하는 이벤트를 처리
+     * 숫자 입력, 연산자 설정, 결과 계산 등의 로직을 포함
+     * </p>
+     */
 
     private class ButtonClickListener implements ActionListener {
         @Override
@@ -138,6 +191,19 @@ public class MainCalculator extends JFrame {
             }
         }
     }
+
+    /**
+     * 두 숫자와 연산자를 받아서 계산을 수행
+     * <p>
+     * 주어진 두 숫자와 연산자를 이용하여 계산 결과를 반환
+     * </p>
+     *
+     * @param first    첫 번째 숫자
+     * @param second   두 번째 숫자
+     * @param operator 연산자
+     * @return 계산 결과
+     */
+
     private BigDecimal calculate(BigDecimal first, BigDecimal second, String operator) {
         switch (operator) {
             case "+":
@@ -153,6 +219,14 @@ public class MainCalculator extends JFrame {
         }
     }
 
+    /**
+     * 프로그램의 진입점
+     * <p>
+     * MainCalculator 클래스를 실행하여 계산기 UI를 표시
+     * </p>
+     *
+     * @param args 명령줄 인수
+     */
 
     public static void main(String[] args) {
         new MainCalculator();
