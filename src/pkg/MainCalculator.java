@@ -19,7 +19,8 @@ import java.math.BigDecimal;
 
 public class MainCalculator extends JFrame {
 
-    private JTextField inputSpace;
+    private JTextArea expressionArea; // 계산 과정을 저장할 JTextArea
+    private JTextField inputSpace; // 사용자 입력
     private String operator = "";
     private BigDecimal firstNumber = null;
 
@@ -32,20 +33,14 @@ public class MainCalculator extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         // NORTH 패널 설정
-
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        gbc.weighty = 4.0; // 비율 4
+        gbc.weighty = 1.0; // 비율 1
         gbc.fill = GridBagConstraints.BOTH;
         add(panelExpression(), gbc);
 
-        // CENTER 패널 설정
-        gbc.gridy = 1;
-        gbc.weighty = 3.0; // 비율 3
-        add(panelWindow(), gbc);
-
         // SOUTH 패널 설정
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.weighty = 3.0; // 비율 3
         add(panelButton(), gbc);
 
@@ -55,26 +50,24 @@ public class MainCalculator extends JFrame {
     private JPanel panelExpression() {
         JPanel expressionPanel = new JPanel(new BorderLayout());
 
+        // JTextArea를 사용하여 계산 과정을 표시
+        expressionArea = new JTextArea();
+        expressionArea.setFont(new Font("나눔고딕", Font.BOLD, 18));
+        expressionArea.setEditable(false);
+        expressionArea.setBackground(new Color(10, 10, 40));
+        expressionArea.setForeground(Color.WHITE);
+        expressionArea.setLineWrap(true);
+        expressionArea.setWrapStyleWord(true);
+
         inputSpace = new JTextField();
         inputSpace.setFont(new Font("나눔고딕", Font.BOLD, 24));
         inputSpace.setBackground(new Color(10,10,40));
         inputSpace.setForeground(Color.WHITE);
-        expressionPanel.add(inputSpace);
+
+        expressionPanel.add(new JScrollPane(expressionArea), BorderLayout.CENTER); // 스크롤 가능하게 설정
+        expressionPanel.add(inputSpace, BorderLayout.SOUTH);
+
         return expressionPanel;
-    }
-
-
-    private JPanel panelWindow() { // 계산 결과값을 출력해주는 패널
-        JPanel windowPanel = new JPanel();
-
-        windowPanel.setLayout(new BorderLayout());
-        JTextField ResultSpace = new JTextField();
-        ResultSpace.setEditable(false); // 편집 불가능하게 설정
-        ResultSpace.setBackground(new Color(40, 40, 40)); // 배경색 그레이로 설정
-        ResultSpace.setHorizontalAlignment(JTextField.LEFT);
-        ResultSpace.setForeground(Color.white);
-        windowPanel.add(ResultSpace);
-        return windowPanel;
     }
 
     private JPanel panelButton() {
@@ -106,7 +99,6 @@ public class MainCalculator extends JFrame {
 
         }
 
-
         return buttonPanel;
     }
 
@@ -121,11 +113,13 @@ public class MainCalculator extends JFrame {
                 inputSpace.setText(""); // 초기화
                 operator = "";
                 firstNumber = null;
+                expressionArea.setText("");// 이전계산기록 초기화
             } else if (command.equals("=")) {
                 if (firstNumber != null && !operator.isEmpty()) {
                     BigDecimal secondNumber = new BigDecimal(inputSpace.getText());
                     BigDecimal result = calculate(firstNumber, secondNumber, operator);
                     inputSpace.setText(result.toString());
+                    expressionArea.append(firstNumber.toString() + " " + operator + " " + secondNumber.toString() + " = " + result.toString() + "\n");
                     firstNumber = null; // 계산 후 초기화
                     operator = "";
                 }
@@ -136,6 +130,8 @@ public class MainCalculator extends JFrame {
                     BigDecimal secondNumber = new BigDecimal(inputSpace.getText());
                     BigDecimal result = calculate(firstNumber, secondNumber, operator);
                     inputSpace.setText(result.toString());
+                    //이전 계산 과정 기록
+                    expressionArea.append(firstNumber.toString() + " " + operator + " " + secondNumber.toString() + " = " + result.toString() + "\n");
                 }
                 operator = command; // 연산자 설정
                 inputSpace.setText(""); // 입력 필드 초기화
