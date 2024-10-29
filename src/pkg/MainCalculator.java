@@ -117,9 +117,9 @@ public class MainCalculator extends JFrame {
 
     private JPanel panelButton() {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 4));
+        buttonPanel.setLayout(new GridLayout(5, 4));
 
-        String[] button_names = {"7", "8", "9", "÷", "4", "5", "6", "×", "1", "2", "3", "-", "C", "0", "=", "+"}; // 계산기 버튼 글자 배열
+        String[] button_names = {"%", "+/-", ".", "=", "7", "8", "9", "÷", "4", "5", "6", "×", "1", "2", "3", "-", "C", "0", "←", "+"}; // 계산기 버튼 글자 배열
         JButton[] buttons = new JButton[button_names.length]; // 버튼 배열
 
         // 버튼 생성 색 지정
@@ -133,11 +133,20 @@ public class MainCalculator extends JFrame {
             if (button_names[i].equals("C")) {
                 buttons[i].setBackground(new Color(255, 192, 203));
             }
+            if (button_names[i].equals("←")) {
+                buttons[i].setBackground(new Color(255, 192, 203));
+            }
             if ("÷×-+".contains(button_names[i])) {
                 buttons[i].setBackground(new Color(245, 222, 179));
             }
             if (button_names[i].equals("=")) {
                 buttons[i].setBackground(new Color(240, 110, 140));
+            }
+            if ("%.".contains(button_names[i])) {
+                buttons[i].setBackground(new Color(145, 192, 203));
+            }
+            if (button_names[i].equals("+/-")) {
+                buttons[i].setBackground(new Color(145, 192, 203));
             }
             buttonPanel.add(buttons[i]);
 
@@ -167,7 +176,26 @@ public class MainCalculator extends JFrame {
                 operator = "";
                 firstNumber = null;
                 expressionArea.setText("");// 이전계산기록 초기화
-            } else if (command.equals("=")) {
+            } else if (command.equals("←")) { // 백스페이스 처리
+                String currentText = inputSpace.getText();
+                if (currentText.length() > 0) {
+                    inputSpace.setText(currentText.substring(0, currentText.length() - 1));
+                }
+            } else if (command.equals("+/-")) { // 음수/양수 변환
+                if (!inputSpace.getText().isEmpty()) {
+                    BigDecimal currentValue = new BigDecimal(inputSpace.getText());
+                    inputSpace.setText(currentValue.negate().toString());
+                }
+            } else if (command.equals(".")) { // 소수점 추가
+                if (!inputSpace.getText().contains(".")) {
+                    inputSpace.setText(inputSpace.getText() + ".");
+                }
+            } else if (command.equals("%")) { // 퍼센트 계산
+                if (!inputSpace.getText().isEmpty()) {
+                    BigDecimal currentValue = new BigDecimal(inputSpace.getText());
+                    inputSpace.setText(currentValue.divide(BigDecimal.valueOf(100)).toString());
+                }
+            }else if (command.equals("=")) {
                 if (firstNumber != null && !operator.isEmpty()) {
                     BigDecimal secondNumber = new BigDecimal(inputSpace.getText());
                     BigDecimal result = calculate(firstNumber, secondNumber, operator);
