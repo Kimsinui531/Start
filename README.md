@@ -1,4 +1,6 @@
 # Start
+![image](https://github.com/user-attachments/assets/a69cac60-acab-47d1-a981-4b2e20a53736)
+
 ## 프로젝트 개요
 MainCalculator는 Java Swing을 사용하여 구현한 간단한 GUI 계산기입니다.
 사용자가 입력한 숫자와 연산자를 통해 계산을 수행하고,
